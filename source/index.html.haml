@@ -1,0 +1,43 @@
+#game(data-item-torch="true" data-item-sword="true" data-item-shield="true" data-player-inventory="none" data-monster-wing="true" data-monster-spike="true" data-monster-fish="true")
+  #game-render
+  .game-instructions
+    .game-instructions-title Dungeon Maze
+    .game-instructions-credits by Jane Rounds and <a href="http://justincrounds.org/" target="_blank">Justin C. Rounds</a>
+    .game-instructions-text Use the arrow keys/buttons to move.
+    .game-instructions-player <span>&#9632;</span> player
+    .game-instructions-hedge <span>&#9632;</span> wall
+    .game-instructions-entrance <span>&#9632;</span> entrance
+    .game-instructions-exit <span>&#9632;</span> exit
+    .game-instructions-item <span>&#9632;</span> item
+    .game-instructions-monster <span>&#9632;</span> monster
+  .game-controls
+    %button.game-controls-up(data-click="player.up()") &uarr;
+    %button.game-controls-left(data-click="player.left()") &larr;
+    %button.game-controls-right(data-click="player.right()") &rarr;
+    %button.game-controls-down(data-click="player.down()") &darr;
+  .game-inventory
+  .game-encounter
+    .game-encounter-item
+      .game-encounter-item-text You have found an item!
+      .game-encounter-item-prompt
+        .block Pick up item?
+        .game-encounter-item-prompt-yes(data-click="takeItem()" data-keybind="y") Yes
+        .game-encounter-item-prompt-no(data-click="leaveItem()" data-keybind="n") No
+    .game-encounter-monster
+      .game-encounter-monster-text You have found a monster!
+      .game-encounter-monster-prompt
+        .block Fight the monster with your <span id="game-encounter-monster-prompt-item">bare hands</span>?
+        .game-encounter-monster-prompt-yes(data-click="fightMonster()" data-keybind="y") Yes
+        .game-encounter-monster-prompt-no(data-click="fleeMonster()" data-keybind="n") No
+  .game-notification
+    .game-notification-inventory You must use the <span id="game-notification-inventory-item"></span> in your inventory before you can pick up another item.
+    .game-notification-victory
+      You defeated the monster!
+      .game-notification-victory-key You find a key on a chain around the monster's neck.
+    .game-notification-defeat You were defeated! Try again?
+    .game-notification-at_entrance The entrance has closed behind you. You will need to find another way out.
+    .game-notification-at_exit The exit is locked. There must be some way to unlock it, though.
+    .game-notification-win
+      You unlock the exit with the key and leave the dungeon.
+      .game-notification-win-congratulations You win! Play again?
+    .game-notification-button(data-click="dismissNotification()" data-keybind="o") Ok

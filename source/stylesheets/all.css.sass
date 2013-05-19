@@ -1,0 +1,314 @@
+@import compass
+
+$player-color: yellow
+$hedge-color: lightGreen
+$monster-color: red
+$entrance-color: blue
+$exit-color: orange
+$item-color: green
+
+=fill
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+*
+  -webkit-user-select: none
+
+body
+  margin: 0
+  background: black
+  font-family: Arial, sans-serif
+  color: white
+  +fill
+
+#game
+  overflow: hidden
+  outline: 1px solid white
+  margin: auto
+  +fill
+  display: table
+  width: 768px
+  height: 512px
+
+#game-render
+  position: absolute
+  top: 0
+  left: 0
+
+.tile
+  position: absolute
+  width: 16px
+  height: 16px
+
+.empty
+  background: transparent
+
+.hedge
+  background: $hedge-color
+
+.monster
+  background: $monster-color
+
+.entrance
+  background: $entrance-color
+
+.exit
+  background: $exit-color
+
+.item
+  background: $item-color
+
+#game[data-item-torch="false"] .torch.item,
+#game[data-item-shield="false"] .shield.item,
+#game[data-item-sword="false"] .sword.item,
+#game[data-monster-wing="false"] .wing.monster,
+#game[data-monster-fish="false"] .fish.monster,
+#game[data-monster-spike="false"] .spike.monster
+  background: transparent 
+
+.player
+  background: $player-color
+  +transition(all, 100ms)
+
+.game-instructions
+  position: absolute
+  top: 0
+  bottom: 0
+  right: 0
+  width: 256px
+  outline: 1px solid white
+  padding: 1em
+  +box-sizing(border-box)
+  text-align: center
+
+.game-instructions-title
+  font-weight: bold
+  font-size: 26px
+  text-transform: uppercase
+
+.game-instructions-credits
+  font-size: 12px
+
+  a
+    color: inherit
+
+.game-instructions-text
+  margin-top: 2em
+  margin-bottom: 1em
+
+.game-instructions-player span
+  color: $player-color
+
+.game-instructions-hedge span
+  color: $hedge-color
+
+.game-instructions-entrance span
+  color: $entrance-color
+
+.game-instructions-exit span
+  color: $exit-color
+
+.game-instructions-item span
+  color: $item-color
+
+.game-instructions-monster span
+  color: $monster-color
+
+.game-controls
+  width: 256px
+  position: absolute
+  right: 0
+  bottom: 1em
+  text-align: center
+
+  button
+    +appearance(none)
+    +box-sizing(content-box)
+    padding: 0.5em
+    +border-radius(0.5em)
+    border: 1px solid white
+    cursor: pointer
+    display: inline-block
+    width: 64px
+    height: 32px
+    line-height: 32px
+    font-size: 32px
+    cursor: pointer
+    background-color: lightGrey
+    text-align: center
+    letter-spacing: 0px
+
+  button:first-child,
+  button:last-child
+    display: block
+    margin: 5px auto
+
+.game-encounter
+  +fill
+  display: none
+
+.game-encounter-item,
+.game-encounter-monster
+  display: none
+  background-position: center center
+  background-repeat: no-repeat
+  background-size: contain
+  background-color: black
+  font-size: 20px
+  text-align: center
+  +fill
+
+.game-encounter-item-text,
+.game-encounter-monster-text
+  text-align: center
+  background-color: transparentize(black, 0.3)
+  margin: auto
+  padding: 1em
+  +border-radius(0 0 1em 1em)
+  border: 1px solid white
+  border-top-width: 0px
+  display: table
+
+.game-encounter-item-prompt,
+.game-encounter-monster-prompt
+  text-align: center
+  font-weight: bold
+  position: absolute
+  bottom: 0
+  padding: 1em
+  background-color: transparentize(black, 0.3)
+  left: 0
+  right: 0
+  white-space: nowrap
+
+.game-encounter-item-prompt-yes,
+.game-encounter-item-prompt-no,
+.game-notification-button,
+.game-encounter-monster-prompt-yes,
+.game-encounter-monster-prompt-no
+  padding: 0.5em
+  +border-radius(0.5em)
+  text-transform: uppercase
+  margin: 0.5em
+  display: inline-block
+  width: 20%
+  border: 1px solid white
+  cursor: pointer
+
+  &:first-letter
+    text-decoration: underline
+
+.game-encounter-item-prompt-yes,
+.game-notification-button,
+.game-encounter-monster-prompt-yes
+  background: green
+
+.game-encounter-item-prompt-no,
+.game-encounter-monster-prompt-no
+  background: red
+
+#game.encounter.monster.fish .game-encounter-monster
+  background-image: inline-image('monster-fish.jpeg')
+
+#game.encounter.monster.spike .game-encounter-monster
+  background-image: inline-image('monster-spike.jpeg')
+
+#game.encounter.monster.wing .game-encounter-monster
+  background-image: inline-image('monster-wing.jpeg')
+
+#game.encounter.item.sword .game-encounter-item
+  background-image: inline-image('item-sword.jpeg')
+
+#game.encounter.item.torch .game-encounter-item
+  background-image: inline-image('item-torch.jpeg')
+
+#game.encounter.item.shield .game-encounter-item
+  background-image: inline-image('item-shield.jpeg')
+
+#game.encounter.item .game-encounter-item,
+#game.encounter.monster .game-encounter-monster,
+#game.encounter.item .game-encounter,
+#game.encounter.monster .game-encounter
+  display: block
+
+.game-notification
+  display: none
+  background: transparentize(black, 0.3)
+  position: relative
+  vertical-align: middle
+  text-align: center
+
+.game-notification-victory,
+.game-notification-defeat
+  font-weight: bold
+
+#game[data-player-inventory="none"].encounter.item .game-notification,
+.game-notification-inventory,
+.game-notification-victory,
+.game-notification-defeat,
+.game-notification-at_entrance,
+.game-notification-at_exit,
+.game-notification-victory-key,
+.game-notification-win
+  display: none
+
+#game[data-player-inventory="torch"].encounter.item .game-notification,
+#game[data-player-inventory="sword"].encounter.item .game-notification,
+#game[data-player-inventory="shield"].encounter.item .game-notification,
+#game.victory .game-notification,
+#game.defeat .game-notification,
+#game.at_entrance .game-notification,
+#game.at_exit .game-notification,
+#game.has_key .game-notification,
+#game.win .game-notification
+  display: table-cell
+
+#game.encounter.item .game-notification-inventory,
+#game.victory .game-notification-victory,
+#game.defeat .game-notification-defeat,
+#game.at_entrance .game-notification-at_entrance,
+#game.at_exit .game-notification-at_exit,
+#game.has_key .game-notification-victory,
+#game.has_key .game-notification-victory-key,
+#game.win .game-notification-win
+  display: block
+
+#game-notification-inventory-item,
+#game-encounter-monster-prompt-item
+  text-transform: uppercase
+
+.game-inventory
+  position: absolute
+  width: 100px
+  height: 100px
+  top: 0
+  left: 0
+  outline: 1px solid white
+  background-position: center center
+  background-repeat: no-repeat
+  background-size: contain
+  background-color: black
+
+#game[data-player-inventory="none"] .game-inventory:after
+  content: "Bare hands"
+
+#game[data-player-inventory="torch"] .game-inventory
+  background-image: inline-image('item-torch.jpeg')
+
+  &:after
+    content: "Torch"
+
+#game[data-player-inventory="sword"] .game-inventory
+  background-image: inline-image('item-sword.jpeg')
+
+  &:after
+    content: "Sword"
+
+#game[data-player-inventory="shield"] .game-inventory
+  background-image: inline-image('item-shield.jpeg')
+
+  &:after
+    content: "Shield"
